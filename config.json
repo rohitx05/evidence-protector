@@ -1,0 +1,6 @@
+{
+  "threshold": 120,
+  "format": "auto",
+  "export": "json",
+  "output": "gaps_report.json"
+}

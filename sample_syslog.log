@@ -1,0 +1,7 @@
+Nov  9 20:36:10 server01 sshd[1234]: Accepted password for root
+Nov  9 20:36:12 server01 sshd[1234]: session opened for user root
+Nov  9 20:36:15 server01 kernel: EXT4-fs mounted
+Nov  9 20:45:00 server01 sshd[1235]: Accepted password for admin
+Nov  9 20:45:02 server01 sudo: admin executed /bin/rm
+Nov  9 21:00:05 server01 kernel: audit trail resumed
+Nov  9 21:00:07 server01 sshd[1236]: session closed

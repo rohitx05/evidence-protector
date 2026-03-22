@@ -1,0 +1,75 @@
+081109 200000 148 INFO sshd: Server started on port 22
+081109 200100 149 INFO kernel: System boot complete
+081109 200200 148 INFO NetworkManager: Connection established to 192.168.1.1
+081109 200300 150 INFO auditd: Audit daemon started
+081109 200400 148 INFO cron: (root) CMD (/usr/lib/cron/run-cron)
+081109 200500 149 INFO systemd: Starting Daily apt upgrade activities
+081109 200600 148 INFO kernel: EXT4-fs (sda1): mounted filesystem
+081109 200700 150 INFO sshd: Accepted publickey for deploy from 10.0.0.10
+081109 200800 148 INFO sudo: deploy : TTY=pts/0 ; COMMAND=/usr/bin/git pull
+081109 200900 149 INFO kernel: audit: type=1400 audit(1257811200.001:10)
+081109 201000 148 INFO NetworkManager: Device eth0: link up
+081109 201100 150 INFO auditd: audit trail message count: 45
+081109 201200 148 INFO sshd: Disconnecting: deploy session closed
+081109 201300 149 INFO cron: (root) CMD (/usr/sbin/logrotate)
+081109 201400 148 INFO kernel: NET: Registered protocol family 10
+081109 201500 150 INFO systemd: Reached target Multi-User System
+081109 201600 148 INFO NetworkManager: Connectivity check succeeded
+081109 201700 149 INFO auditd: type=SYSCALL msg=audit(1257811620.123:51)
+081109 201800 148 INFO kernel: EXT4-fs: re-mounted
+081109 201900 150 INFO sshd: Server listening on :: port 22
+081109 202000 148 INFO cron: (CRON) INFO (No MTA installed)
+081109 202100 149 INFO NetworkManager: new connection requested
+081109 202200 148 INFO kernel: TCP: SYN cookies enabled
+081109 202300 150 INFO systemd: Started Network Time Synchronization
+081109 202400 148 INFO auditd: audit trail resumed
+081109 202500 149 INFO sshd: Accepted password for root from 10.0.0.99 port 443
+081109 202502 150 INFO sudo: root : TTY=pts/1 ; PWD=/var/log ; USER=root ; COMMAND=/bin/bash
+081109 202504 148 INFO kernel: audit: type=1400 audit(1257812124.001:52)
+this line is malformed and should be skipped gracefully
+081109 203615 149 INFO kernel: audit: type=1400 audit(1257810977.632:53)
+081109 203617 148 INFO auditd: audit trail message
+081109 204500 148 INFO sshd: Accepted password for admin from 10.0.0.55 port 4422
+081109 204501 150 INFO sudo: admin : TTY=pts/1 ; PWD=/var/log ; USER=root ; COMMAND=/bin/rm auth.log
+081109 204502 148 INFO kernel: EXT4-fs warning: checktime reached, running e2fsck
+081109 204503 149 INFO auditd: audit trail resumed
+081109 204504 148 INFO NetworkManager: Device eth0 successfully disconnected
+081109 204505 150 INFO kernel: usb 1-1: new high-speed USB device
+081109 204506 148 INFO systemd: Started Session 14 of user admin
+081109 204507 149 INFO cron: (root) CMD (/usr/sbin/logrotate /etc/logrotate.conf)
+081109 204508 148 INFO auditd: type=SYSCALL msg=audit(1257811508.123:89)
+081109 204509 150 INFO kernel: NET: Registered protocol family 10
+081109 204510 148 INFO sshd: Disconnecting: Too many authentication failures
+081109 204511 149 INFO NetworkManager: Connection to 192.168.1.1 deactivated
+081109 204512 148 INFO kernel: Oops: 0002 [#1] SMP PTI
+081109 204513 150 INFO systemd: systemd-udevd.service: Deactivated successfully
+081109 210000 148 INFO sshd: Server listening on 0.0.0.0 port 22
+081109 210001 149 INFO kernel: IPv6: ADDRCONF eth0 link becomes ready
+081109 210002 148 INFO NetworkManager: Connection established to 10.0.0.1
+081109 210003 150 INFO auditd: audit trail started
+081109 210004 148 INFO systemd: Started OpenSSH Server Daemon
+081109 210005 149 INFO cron: (root) CMD (/usr/lib/cron/run-cron)
+081109 210006 148 INFO kernel: EXT4-fs (sda1): re-mounted
+081109 210007 150 INFO sshd: Accepted publickey for root from 10.0.0.33 port 9922
+081109 210010 148 INFO sudo: root : TTY=pts/0 ; PWD=/ ; USER=root ; COMMAND=/bin/bash
+081109 210012 149 INFO auditd: type=USER_CMD msg=audit(1257812412.456:102)
+081109 210015 148 INFO kernel: audit: backlog limit exceeded
+081109 210016 149 INFO NetworkManager: Device eth0: carrier lost
+081109 210017 148 INFO systemd: network.service: Deactivated successfully
+081109 210018 150 INFO sshd: Received disconnect from 10.0.0.33 port 9922
+081109 214530 148 INFO kernel: EXT4-fs (sda1): mounted filesystem with ordered data mode
+081109 214531 149 INFO sshd: Server listening on :: port 22
+081109 214532 148 INFO NetworkManager: new connection requested
+081109 214533 150 INFO systemd: Started Network Time Synchronization
+081109 214534 148 INFO auditd: audit trail message count: 245
+081109 214535 149 INFO cron: (CRON) INFO (No MTA installed)
+081109 214536 148 INFO kernel: TCP: request_sock_TCP: Possible SYN flooding
+081109 214537 150 INFO sshd: Accepted password for backup from 10.0.0.12 port 2222
+081109 214538 148 INFO sudo: backup : TTY=pts/2 ; USER=root ; COMMAND=/bin/cat /etc/shadow
+081109 214539 149 INFO auditd: type=SYSCALL msg=audit(1257813309.789:133)
+081109 214540 148 INFO kernel: audit: type=1400 audit(1257813310.001:134)
+081109 214600 148 INFO NetworkManager: Connection established
+081109 214700 149 INFO sshd: Accepted publickey for monitor from 10.0.0.5
+081109 214800 148 INFO kernel: EXT4-fs integrity check complete
+081109 214900 150 INFO auditd: audit daemon shutdown
+081109 215000 148 INFO systemd: System shutdown initiated
