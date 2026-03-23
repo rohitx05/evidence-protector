@@ -222,7 +222,19 @@ def detect_gaps(filepath, threshold_seconds, format_name="auto"):
                 if prev_ts is not None:
                     delta = (ts - prev_ts).total_seconds()
                     if delta < 0:
-                        malformed_lines += 1
+                        before_ctx = list(line_buffer[-CONTEXT_LINES:])
+                        gaps.append({
+                            "gap_number":       len(gaps) + 1,
+                            "start_time":       prev_ts.strftime("%Y-%m-%d %H:%M:%S"),
+                            "end_time":         ts.strftime("%Y-%m-%d %H:%M:%S"),
+                            "start_line":       prev_line,
+                            "end_line":         line_num,
+                            "duration_seconds": int(delta),
+                            "severity":         "CRITICAL",
+                            "before_context":   before_ctx,
+                            "after_line_num":   line_num,
+                            "is_reversal":      True
+                        })
                     elif delta > threshold_seconds:
                         before_ctx = list(line_buffer[-CONTEXT_LINES:])
                         gaps.append({
@@ -273,6 +285,7 @@ def detect_gaps(filepath, threshold_seconds, format_name="auto"):
         "critical_gaps":  sum(1 for g in gaps if g["severity"] == "CRITICAL"),
         "medium_gaps":    sum(1 for g in gaps if g["severity"] == "MEDIUM"),
         "low_gaps":       sum(1 for g in gaps if g["severity"] == "LOW"),
+        "time_reversals": sum(1 for g in gaps if g.get("is_reversal", False)),
     }
 
     return gaps, stats

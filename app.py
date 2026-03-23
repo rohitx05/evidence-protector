@@ -4,7 +4,7 @@ app.py — The Evidence Protector: Web Interface
 Run: python app.py  →  http://localhost:5000
 """
 
-from flask import Flask, request, render_template_string, jsonify
+from flask import Flask, request, render_template_string, jsonify, render_template
 import os, tempfile, json
 from integrity_check import detect_gaps
 
@@ -387,9 +387,9 @@ header {
 
   <div class="upload-section">
     <div class="drop-zone" id="dropZone">
-      <input type="file" id="fileInput" accept=".log,.txt">
-      <div class="drop-title">[ SELECT LOG FILE ]</div>
-      <div class="drop-sub">Drag & drop or click to browse (.log / .txt)</div>
+      <input type="file" id="fileInput" accept=".log,.txt,.json">
+      <div class="drop-title">[ IMPORT LOG FILE OR JSON REPORT ]</div>
+      <div class="drop-sub">Drag & drop or click to browse (.log / .txt / .json)</div>
       <div id="fileNameWrapper" style="display:none">
         <div class="drop-filename" id="fileName"></div>
       </div>
@@ -435,6 +435,9 @@ setInterval(() => {
 let scanData = null;
 let scatterChart = null;
 
+let customHighlightKw = "";
+let currentFilter = "ALL";
+
 // ── FILE HANDLING ──
 const fileInput = document.getElementById('fileInput');
 const dropZone  = document.getElementById('dropZone');
@@ -461,6 +464,26 @@ function setFile(name) {
 async function runScan() {
   const file = fileInput.files[0];
   if (!file) return;
+
+  // HYDRATION: If JSON, read directly without server
+  if (file.name.toLowerCase().endsWith('.json')) {
+    document.getElementById('loader').style.display = 'block';
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        scanData = { gaps: data.gaps, stats: data.summary };
+        render(scanData);
+      } catch(err) {
+        document.getElementById('errorBox').innerHTML = `<div class="error-box">[ERROR] Invalid JSON Report</div>`;
+      } finally {
+        document.getElementById('loader').style.display = 'none';
+      }
+    };
+    reader.readAsText(file);
+    return;
+  }
+
   const form = new FormData();
   form.append('logfile', file);
   form.append('threshold', document.getElementById('threshold').value);
@@ -577,9 +600,11 @@ function renderChartContainer() {
   </div>`;
 }
 
-function initChart(gaps) {
+function initChart(allGaps) {
   const ctx = document.getElementById('scatterCanvas').getContext('2d');
   if (scatterChart) scatterChart.destroy();
+
+  const gaps = allGaps.filter(g => currentFilter === 'ALL' || g.severity === currentFilter);
 
   const chartData = gaps.map(g => ({
     x: g.gap_number, y: g.duration_seconds, severity: g.severity, time: g.start_time
@@ -632,8 +657,8 @@ function renderStats(s) {
     <div class="stat-box"><div class="stat-val c-crit">${s.critical_gaps}</div><div class="stat-lbl">Critical</div></div>
     <div class="stat-box"><div class="stat-val c-med">${s.medium_gaps}</div><div class="stat-lbl">Medium</div></div>
     <div class="stat-box"><div class="stat-val c-low">${s.low_gaps}</div><div class="stat-lbl">Low</div></div>
+    <div class="stat-box"><div class="stat-val c-crit" style="font-weight:700">${s.time_reversals || 0}</div><div class="stat-lbl c-crit">Reversals</div></div>
     <div class="stat-box"><div class="stat-val" style="color:var(--text)">${s.parsed_lines}</div><div class="stat-lbl">Lines Parsed</div></div>
-    <div class="stat-box"><div class="stat-val" style="color:var(--text-dim)">${s.malformed_lines}</div><div class="stat-lbl">Malformed</div></div>
   </div>`;
 }
 
@@ -661,6 +686,11 @@ function highlightSuspicious(text) {
   const patterns = [/rm\s+\S+/g, /\/bin\/bash/g, /COMMAND=.+/g, /Accepted password/g, /cat \/etc\/shadow/g];
   let t = text;
   patterns.forEach(p => { t = t.replace(p, m => `<span class="highlight">${m}</span>`); });
+  
+  if (customHighlightKw) {
+     const customRegex = new RegExp(customHighlightKw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+     t = t.replace(customRegex, m => `<span class="highlight" style="background:var(--accent); color:#000">${m}</span>`);
+  }
   return t;
 }
 
@@ -681,11 +711,13 @@ function toggleRow(id) {
   }
 }
 
-function renderGaps(gaps) {
+function renderGaps(allGaps) {
+  const gaps = allGaps.filter(g => currentFilter === 'ALL' || g.severity === currentFilter);
+
   const rows = gaps.map(g => `
     <tr class="row-header ${g.severity}" onclick="toggleRow(${g.gap_number})">
-      <td><span class="tag ${g.severity}">${g.severity}</span></td>
-      <td>${g.duration_seconds}s</td>
+      <td><span class="tag ${g.severity}">${g.severity}</span> ${g.is_reversal ? `<span style="color:var(--critical); font-weight:bold; font-size:10px; margin-left:4px">REVERSAL</span>` : ``}</td>
+      <td>${g.is_reversal ? `<span style="color:var(--critical);">${g.duration_seconds}s</span>` : `${g.duration_seconds}s`}</td>
       <td>${g.start_time}</td>
       <td>${g.end_time}</td>
       <td style="color:var(--text-muted)">L${g.start_line} &rarr; L${g.end_line}</td>
@@ -705,8 +737,23 @@ function renderGaps(gaps) {
       </td>
     </tr>`).join('');
 
+  const filterBtns = `
+    <div style="display:flex; gap:8px; margin-left:16px;">
+      <button onclick="currentFilter='ALL'; render(scanData)" class="btn ${currentFilter==='ALL'?'btn-primary':'btn-outline'}" style="padding:4px 8px;">ALL</button>
+      <button onclick="currentFilter='CRITICAL'; render(scanData)" class="btn ${currentFilter==='CRITICAL'?'btn-primary':'btn-outline'}" style="padding:4px 8px;">CRIT</button>
+      <button onclick="currentFilter='MEDIUM'; render(scanData)" class="btn ${currentFilter==='MEDIUM'?'btn-primary':'btn-outline'}" style="padding:4px 8px;">MED</button>
+      <button onclick="currentFilter='LOW'; render(scanData)" class="btn ${currentFilter==='LOW'?'btn-primary':'btn-outline'}" style="padding:4px 8px;">LOW</button>
+    </div>
+  `;
+
   return `<div class="panel">
-    <div class="panel-header">Discrepancy Ledger <span>(Click row to expand)</span></div>
+    <div class="panel-header" style="align-items:center;">
+      <span>Discrepancy Ledger <span>(Click row to expand)</span></span>
+      ${filterBtns}
+      <input type="text" id="customKw" placeholder="Custom Term Search (Regex allowed)" 
+        style="background:var(--bg); color:var(--text); border:1px solid var(--border2); font-size:10px; padding:6px 8px; width:220px; margin-left:auto; font-family:'IBM Plex Mono';" 
+        onchange="customHighlightKw=this.value; render(scanData);" value="${customHighlightKw}">
+    </div>
     <table class="data-table">
       <thead>
         <tr>
@@ -771,7 +818,22 @@ function dl(blob, name) {
 
 @app.route("/")
 def index():
+    return render_template("index.html")
+
+@app.route("/dashboard")
+def dashboard():
     return render_template_string(HTML)
+
+@app.route("/docs")
+def docs():
+    try:
+        with open("README.md", "r", encoding="utf-8") as f:
+            content = f.read()
+            # Basic HTML escape to prevent XSS and formatting issues
+            content = content.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+        return f"<pre style='margin:0; padding:2rem; background:#050505; color:#f0f0f0; font-family:\"IBM Plex Mono\", monospace; line-height:1.6; white-space:pre-wrap; word-wrap:break-word;'>{content}</pre>"
+    except Exception as e:
+        return str(e), 500
 
 @app.route("/scan", methods=["POST"])
 def scan():

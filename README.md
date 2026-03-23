@@ -1,3 +1,4 @@
+
 # 🛡️ The Evidence Protector
 ### Automated Log Integrity Monitor
 
@@ -316,19 +317,24 @@ Auto-detect, gap detection, reporting, and exports all work automatically. No ot
 ## ✅ Features
 
 - [x] Severity scoring (LOW / MEDIUM / CRITICAL)
+- [x] **Time Reversal Detection** — Flags injected/backward timestamps as CRITICAL reversals
 - [x] Summary insights (longest gap, total missing time)
 - [x] JSON export (`--export json` via CLI or Export JSON button in Web UI)
 - [x] CSV export (`--export csv` via CLI or Export CSV button in Web UI)
+- [x] **Zero-DB JSON Hydration** — Drag & drop previously exported `.json` reports into the UI to instantly redraw the interactive dashboard without re-running scans
 - [x] Visual ASCII timeline (CLI)
 - [x] Visual interactive timeline (Web UI — clickable segments jump to gap details)
-- [x] Anomaly Distribution scatter chart (Web UI — Chart.js, duration vs sequence)
+- [x] Anomaly Distribution scatter chart (Web UI — Chart.js, duration vs sequence, filterable)
 - [x] Multi-format parsing with auto-detect
 - [x] Config file support
 - [x] Forensic context blocks (pre-gap log tail + post-gap log head)
 - [x] Expandable gap rows in Web UI data table
+- [x] **Severity Data Filters** — Instantly filter the map and tables by `ALL`, `CRITICAL`, `MEDIUM`, or `LOW`
+- [x] **Custom Suspect Highlighting** — Real-time custom regex/text search over the forensic context blocks built directly into the UI
 - [x] Suspicious activity highlighting (`rm`, `COMMAND=`, `Accepted password`, etc.)
 - [x] Malformed line tolerance — never crashes
 - [x] Bloomberg terminal aesthetic (black + orange, IBM Plex Mono)
+- [x] Custom Premium Landing Page natively served via Flask
 
 ---
 
@@ -340,11 +346,11 @@ The web interface mirrors everything the CLI outputs but in an interactive brows
 
 | Panel | Description |
 |---|---|
-| **Stat Bar** | Total gaps, Critical / Medium / Low counts, lines parsed, malformed count |
-| **Execution Metadata** | Format detected, time range, threshold, total lines, Export CSV/JSON buttons |
+| **Stat Bar** | Total gaps, Critical / Medium / Low counts, Time Reversals, lines parsed |
+| **Execution Metadata** | Format detected, time range, threshold, Export CSV/JSON / Import JSON Dropzone |
 | **Visual Timeline** | Interactive bar anchored to full log duration — click any gap segment to jump to its row |
-| **Anomaly Distribution** | Chart.js scatter plot — each gap plotted by sequence number (X) vs duration in seconds (Y), colored by severity |
-| **Discrepancy Ledger** | Sortable data table of all gaps — click any row to expand forensic context (pre-gap log tail + post-gap log head) |
+| **Anomaly Distribution** | Chart.js scatter plot — instantly reacts to Severity Filters (Critical, Medium, Low) |
+| **Discrepancy Ledger** | Sortable data table with custom regex highlight search bar. Click any row to expand forensic context blocks |
 | **System Intelligence** | Analyst recommendation based on highest severity found |
 
 ---

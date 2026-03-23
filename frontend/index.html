@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Evidence Protector</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=IBM+Plex+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="grid-overlay">
+        <!-- Kept the grid for texture, but altered opacity for depth -->
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+        <div class="grid-line"></div>
+    </div>
+    
+    <div class="glow-bg"></div>
+
+    <div class="page-wrapper">
+        <nav class="navbar">
+            <div class="logo">EP &ndash; V1.0</div>
+            <div class="nav-right">
+                <span class="hero-time" id="clock">11:06:20 IST</span>
+                <a href="https://github.com" target="_blank" class="btn-sign-in">GITHUB &nearr;</a>
+            </div>
+        </nav>
+
+        <main>
+            <section class="hero-section">
+                <div class="hero-label-center">SECURITY FORENSICS</div>
+                
+                <h1 class="hero-title">
+                    The <span class="highlight">Evidence</span><br>
+                    Protector
+                </h1>
+                
+                <p class="hero-desc">
+                    A lightweight forensic tool that scans your system logs<br>
+                    for suspicious temporal gaps &mdash; the digital fingerprint<br>
+                    of a compromised cover-up.
+                </p>
+                
+                <div class="hero-actions">
+                    <a href="http://localhost:5000" class="btn-primary">START SCAN</a>
+                    <a href="#" class="btn-secondary">READ DOCS</a>
+                </div>
+            </section>
+
+            <section class="features-section">
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">&#x2B22;</span>
+                        <h2 class="feature-title">Integrity Monitor</h2>
+                    </div>
+                    <p class="feature-desc">Instantly detect temporal gaps in continuous server logs, revealing potential compromises and missing activity windows across multiple standard formats.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">&#x2B22;</span>
+                        <h2 class="feature-title">Context Scoring</h2>
+                    </div>
+                    <p class="feature-desc">Dynamically scores anomalies by severity (Low, Medium, Critical) and instantly isolates exact activity occurring immediately before and after the missing window.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <span class="feature-icon">&#x2B22;</span>
+                        <h2 class="feature-title">Zero Dependency</h2>
+                    </div>
+                    <p class="feature-desc">Built purely on the Python standard library. Can be universally deployed to air-gapped forensic environments without installing massive packages or needing internet.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
